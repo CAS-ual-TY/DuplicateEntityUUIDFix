@@ -1,15 +1,14 @@
-modLoader="javafml" #mandatory
-loaderVersion="[34,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+modLoader="javafml"
+loaderVersion="[34,)"
 license="GNU General Public License v3.0"
-issueTrackerURL="https://github.com/CAS-ual-TY/DuplicateEntityUUIDFix/issues" #optional
+issueTrackerURL="https://github.com/CAS-ual-TY/DuplicateEntityUUIDFix/issues"
 
-[[mods]] #mandatory
-    modId="deuf" #mandatory
-    version="${file.jarVersion}" #mandatory
-    displayName="DEUF - Duplicate Entity UUID Fix" #mandatory
-    #updateJSONURL="http://myurl.me/" #optional
-    displayURL="https://github.com/CAS-ual-TY/DuplicateEntityUUIDFix" #optional
-    logoFile="logo.png" #optional
-    credits="Thanks for this example mod goes to Java" #optional
-    authors="CAS_ual_TY" #optional
+[[mods]]
+    modId="deuf"
+    version="${file.jarVersion}"
+    displayName="DEUF - Duplicate Entity UUID Fix"
+    displayURL="https://github.com/CAS-ual-TY/DuplicateEntityUUIDFix"
+    logoFile="logo.png"
+    credits="Mojang and the Minecraft Forge Team"
+    authors="CAS_ual_TY"
     description="Changes UUIDs of loaded Entities in case their UUIDs are already assigned (and removes log spam)."
