@@ -1,6 +1,6 @@
 modLoader="javafml"
-loaderVersion="[34,)"
-license="GNU General Public License v3.0"
+loaderVersion="[36,)"
+license="MIT License"
 issueTrackerURL="https://github.com/CAS-ual-TY/DuplicateEntityUUIDFix/issues"
 
 [[mods]]
