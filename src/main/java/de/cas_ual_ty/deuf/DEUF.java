@@ -2,14 +2,15 @@ package de.cas_ual_ty.deuf;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Random;
 import java.util.UUID;
 
 @Mod(DEUF.MOD_ID)
@@ -19,23 +20,23 @@ public class DEUF
     
     public static final String MOD_ID = "deuf";
     
-    private static final Random RANDOM = new Random();
+    private static final RandomSource RANDOM = RandomSource.create();
     
     public DEUF()
     {
         MinecraftForge.EVENT_BUS.addListener(this::fix);
     }
     
-    public void fix(EntityJoinWorldEvent event)
+    public void fix(EntityJoinLevelEvent event)
     {
-        if(event.getWorld() instanceof ServerLevel level)
+        if(event.getLevel() instanceof ServerLevel level)
         {
             Entity entity = event.getEntity();
             UUID uuid = entity.getUUID();
             
             if(level.getEntity(uuid) != entity)
             {
-                UUID uuidNew = Mth.createInsecureUUID(RANDOM);
+                UUID uuidNew = Mth.createInsecureUUID();
                 while(level.getEntity(uuidNew) != null)
                 {
                     uuidNew = Mth.createInsecureUUID(RANDOM);
@@ -43,7 +44,7 @@ public class DEUF
                 
                 entity.setUUID(uuidNew);
                 
-                DEUF.LOGGER.info("Changing UUID of entity {} that already existed from {} to {}", entity.getType().getRegistryName().toString(), uuid.toString(), uuidNew.toString());
+                DEUF.LOGGER.info("Changing UUID of entity {} that already existed from {} to {}", ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString(), uuid.toString(), uuidNew.toString());
             }
         }
     }
