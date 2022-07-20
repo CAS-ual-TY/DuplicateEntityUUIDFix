@@ -1,18 +1,14 @@
 package de.cas_ual_ty.deuf;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ClassInheritanceMultiMap;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Collection;
 import java.util.Random;
 import java.util.UUID;
 
@@ -23,48 +19,31 @@ public class DEUF
     
     public static final String MOD_ID = "deuf";
     
+    private static final Random RANDOM = new Random();
+    
     public DEUF()
     {
         MinecraftForge.EVENT_BUS.addListener(this::fix);
     }
     
-    public void fix(ChunkEvent.Load event)
+    public void fix(EntityJoinWorldEvent event)
     {
-        if(!(event.getChunk() instanceof Chunk))
+        if(event.getWorld() instanceof ServerLevel level)
         {
-            return;
-        }
-        
-        Chunk chunk = (Chunk) event.getChunk();
-        if(chunk.getWorldForge() != null && !chunk.getWorldForge().isClientSide && chunk.getWorldForge() instanceof ServerWorld)
-        {
-            ServerWorld world = (ServerWorld) chunk.getWorldForge();
-            ClassInheritanceMultiMap<Entity>[] entities = chunk.getEntitySections();
+            Entity entity = event.getEntity();
+            UUID uuid = entity.getUUID();
             
-            for(ClassInheritanceMultiMap<Entity> classinheritancemultimap : entities)
+            if(level.getEntity(uuid) != entity)
             {
-                Collection<Entity> entityCollection = com.google.common.collect.ImmutableList.copyOf(classinheritancemultimap);
-                
-                for(Entity entity : entityCollection)
+                UUID uuidNew = Mth.createInsecureUUID(RANDOM);
+                while(level.getEntity(uuidNew) != null)
                 {
-                    if(!(entity instanceof PlayerEntity))
-                    {
-                        UUID uuid = entity.getUUID();
-                        
-                        if(world.getEntity(uuid) != entity)
-                        {
-                            UUID uuidNew = MathHelper.createInsecureUUID(new Random());
-                            while(world.getEntity(uuidNew) != null)
-                            {
-                                uuidNew = MathHelper.createInsecureUUID(new Random());
-                            }
-                            
-                            entity.setUUID(uuidNew);
-                            
-                            DEUF.LOGGER.info("Changing UUID of entity {} that already existed from {} to {}", entity.getType().getRegistryName().toString(), uuid.toString(), uuidNew.toString());
-                        }
-                    }
+                    uuidNew = Mth.createInsecureUUID(RANDOM);
                 }
+                
+                entity.setUUID(uuidNew);
+                
+                DEUF.LOGGER.info("Changing UUID of entity {} that already existed from {} to {}", entity.getType().getRegistryName().toString(), uuid.toString(), uuidNew.toString());
             }
         }
     }
