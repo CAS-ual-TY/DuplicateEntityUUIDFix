@@ -4,6 +4,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -32,9 +33,17 @@ public class DEUF
         if(event.getLevel() instanceof ServerLevel level)
         {
             Entity entity = event.getEntity();
+            
+            if(entity instanceof Player)
+            {
+                return;
+            }
+            
             UUID uuid = entity.getUUID();
             
-            if(level.getEntity(uuid) != entity)
+            Entity existing = level.getEntity(uuid);
+            
+            if(existing != null && existing != entity)
             {
                 UUID uuidNew = Mth.createInsecureUUID();
                 while(level.getEntity(uuidNew) != null)
