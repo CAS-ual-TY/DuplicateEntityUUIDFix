@@ -1,14 +1,15 @@
 modLoader="javafml"
-loaderVersion="[45,)"
-license="MIT License"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
 issueTrackerURL="https://github.com/CAS-ual-TY/DuplicateEntityUUIDFix/issues"
 
 [[mods]]
-    modId="deuf"
-    version="${file.jarVersion}"
-    displayName="DEUF - Duplicate Entity UUID Fix"
+    modId="${mod_id}"
+    version="${mod_version}"
+    displayName="${mod_name}"
     displayURL="https://github.com/CAS-ual-TY/DuplicateEntityUUIDFix"
     logoFile="logo.png"
     credits="Mojang and the Minecraft Forge Team"
-    authors="CAS_ual_TY"
-    description="Changes UUIDs of loaded Entities in case their UUIDs are already assigned (and removes log spam)."
+    authors="${mod_authors}"
+    displayTest="MATCH_VERSION"
+    description='''${mod_description}'''
